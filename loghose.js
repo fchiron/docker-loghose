@@ -21,7 +21,7 @@ function cli () {
   })
 
   if (argv.help) {
-    console.log('Usage: docker-loghose [--json] [--newline] [--help]\n' +
+    console.log('Usage: docker-loghose [--json] [--newline] [--keepLineOnly] [--help]\n' +
                 '                      [--matchByImage REGEXP] [--matchByName REGEXP]\n' +
                 '                      [--skipByImage REGEXP] [--skipByName REGEXP]')
     process.exit(1)
@@ -33,7 +33,8 @@ function cli () {
     skipByName: argv.skipByName,
     skipByImage: argv.skipByImage,
     newline: argv.newline,
-    json: argv.json
+    json: argv.json,
+    keepLineOnly: argv.keepLineOnly
   }).pipe(through.obj(function (chunk, enc, cb) {
     this.push(JSON.stringify(chunk))
     this.push('\n')

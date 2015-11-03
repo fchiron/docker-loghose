@@ -3,10 +3,10 @@ var through = require('through2')
 var data = require('./data')
 var expect = require('chai').expect
 
-function expectedData (line) {
+function expectedData (line, lineOnly) {
   var clone = JSON.parse(JSON.stringify(data.sampleOutput))
   clone.line = line
-  return clone
+  return lineOnly ? clone.line : clone
 }
 
 function buildHeader (line) {
@@ -31,10 +31,10 @@ module.exports.buildBuffer = function (line) {
   return buffer
 }
 
-module.exports. expectData = function (lineParser, data, done) {
+module.exports. expectData = function (lineParser, data, done, lineOnly) {
   var index = 0
   lineParser.pipe(through.obj(function (chunk, enc, cb) {
-    expect(chunk).to.deep.equals(expectedData(data[index]))
+    expect(chunk).to.deep.equals(expectedData(data[index], lineOnly))
     if (index === data.length - 1) {
       done()
     }
